@@ -25,6 +25,7 @@ const Home = () => {
 
   const [data, setData] = useState(recipes);
   const [query, setQuery] = useState("");
+  const [hmap, setHmap] = useState([]);
 
   const onSubmitted = () => {
     setData(
@@ -34,11 +35,6 @@ const Home = () => {
     );
     setQuery("");
   };
-
-  useEffect(() => {
-    setData(recipes);
-  }, []);
-
   return (
     <View>
       {isOpen && (
@@ -114,8 +110,9 @@ const Home = () => {
             </Text>
           )}
           {data.length > 0 &&
-            data.map((recipe) => (
+            data.map((recipe, index) => (
               <TouchableOpacity
+                key={index}
                 onPress={() =>
                   navigation.navigate("IndCard", { recipe: recipe })
                 }

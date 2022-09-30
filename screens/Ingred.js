@@ -26,8 +26,8 @@ const Ingred = () => {
       </View>
       <ScrollView>
         <View style={styles.cardCont}>
-          {ing.map((item) => (
-            <IngCard item={item} />
+          {ing.map((item, index) => (
+            <IngCard item={item} key={index} />
           ))}
         </View>
       </ScrollView>

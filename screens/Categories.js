@@ -24,8 +24,8 @@ const Categories = () => {
       </View>
       <ScrollView>
         <View style={styles.cardCont}>
-          {categories.map((cat) => (
-            <CatCard cat={cat} />
+          {categories.map((cat, index) => (
+            <CatCard cat={cat} key={index} />
           ))}
         </View>
       </ScrollView>
