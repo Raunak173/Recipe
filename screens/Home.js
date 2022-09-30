@@ -7,10 +7,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import menu from "../assets/menu.png";
 import close from "../assets/close.png";
-import { recipes } from "../data";
+import cross from "../assets/cross.png";
+import { categories, recipes } from "../data";
 import Card from "../components/Card";
 import { useNavigation } from "@react-navigation/native";
 import cat from "../assets/cat.png";
@@ -21,6 +22,23 @@ const Home = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearch, setIsSearch] = useState(false);
   const navigation = useNavigation();
+
+  const [data, setData] = useState(recipes);
+  const [query, setQuery] = useState("");
+
+  const onSubmitted = () => {
+    setData(
+      recipes.filter((rec) =>
+        rec.title.toLowerCase().includes(query.toLowerCase())
+      )
+    );
+    setQuery("");
+  };
+
+  useEffect(() => {
+    setData(recipes);
+  }, []);
+
   return (
     <View>
       {isOpen && (
@@ -40,7 +58,7 @@ const Home = () => {
               }}
             >
               <Image source={home} style={styles.tabImg} />
-              {isSearch === false && <Text style={styles.tabText}>Home</Text>}
+              <Text style={styles.tabText}>Home</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.tab}
@@ -65,7 +83,23 @@ const Home = () => {
           </View>
         </View>
       )}
-      {isSearch && <TextInput style={styles.input} />}
+      {isSearch && (
+        <>
+          <TextInput
+            style={styles.input}
+            value={query}
+            onChangeText={(text) => setQuery(text)}
+            onSubmitEditing={() => onSubmitted()}
+          />
+          <Image source={search} style={styles.stext} />
+          <TouchableOpacity
+            style={styles.cb}
+            onPress={() => setIsSearch(!isSearch)}
+          >
+            <Image source={cross} style={styles.cross} />
+          </TouchableOpacity>
+        </>
+      )}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => setIsOpen(!isOpen)}>
           <Image source={menu} style={styles.img} />
@@ -74,13 +108,21 @@ const Home = () => {
       </View>
       <ScrollView>
         <View style={styles.cardCont}>
-          {recipes.map((recipe) => (
-            <TouchableOpacity
-              onPress={() => navigation.navigate("IndCard", { recipe: recipe })}
-            >
-              <Card recipe={recipe} />
-            </TouchableOpacity>
-          ))}
+          {data.length === 0 && (
+            <Text style={styles.sorry}>
+              Sorry! No data found for given query :/
+            </Text>
+          )}
+          {data.length > 0 &&
+            data.map((recipe) => (
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("IndCard", { recipe: recipe })
+                }
+              >
+                <Card recipe={recipe} />
+              </TouchableOpacity>
+            ))}
         </View>
       </ScrollView>
     </View>
@@ -149,6 +191,28 @@ const styles = StyleSheet.create({
     top: 45,
     left: 100,
     borderRadius: 20,
-    paddingHorizontal: 10,
+    paddingHorizontal: 40,
+  },
+  stext: {
+    position: "absolute",
+    width: 20,
+    height: 20,
+    top: 55,
+    left: 110,
+  },
+  cross: {
+    width: 10,
+    height: 10,
+  },
+  cb: {
+    position: "absolute",
+    top: 60,
+    right: 80,
+  },
+  sorry: {
+    color: "red",
+    textAlign: "center",
+    fontSize: 20,
+    lineHeight: 25,
   },
 });
