@@ -2,6 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import IndCard from "./components/IndCard";
 import Categories from "./screens/Categories";
+import CatPage from "./screens/CatPage";
 import Home from "./screens/Home";
 import Ingred from "./screens/Ingred";
 
@@ -35,6 +36,13 @@ export default function App() {
         <Stack.Screen
           name="Ing"
           component={Ingred}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="CatPage"
+          component={CatPage}
           options={{
             headerShown: false,
           }}

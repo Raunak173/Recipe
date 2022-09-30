@@ -1,10 +1,15 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { recipes } from "../data";
+import { useNavigation } from "@react-navigation/native";
 
 const CatCard = ({ cat }) => {
+  const navigation = useNavigation();
   return (
-    <TouchableOpacity style={styles.card}>
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() => navigation.navigate("CatPage", { cat: cat })}
+    >
       <Image source={{ uri: cat.photo_url }} style={styles.img} />
       <Text style={styles.text}>{cat.name}</Text>
       <Text style={styles.rec}>
