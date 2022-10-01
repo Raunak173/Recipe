@@ -12,3 +12,5 @@ Steps to run:
 6. To run it on your physical device, you need to install Expo go app from Playstore or Appstore.
 
 [Video demonstartion of the Project](https://drive.google.com/file/d/1MdBi0SmFMtZliJLS7hqDhrQgJGuJxE-f/view?usp=sharing)
+
+[APK Link](https://drive.google.com/file/d/1PFZWHqgIno21_vk2TXdqhaFAMK-UprEU/view?usp=drivesdk)
