@@ -23,14 +23,14 @@ export default CatCard;
 
 const styles = StyleSheet.create({
   img: {
-    width: 280,
+    width: 300,
     height: 200,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
   },
   card: {
     height: 270,
-    width: 280,
+    width: 320,
     marginBottom: 20,
     borderColor: "grey",
     borderRadius: 20,

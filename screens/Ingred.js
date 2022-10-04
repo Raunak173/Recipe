@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 25,
     fontWeight: "bold",
-    marginLeft: 60,
+    marginLeft: 80,
   },
   cardCont: {
     marginHorizontal: 40,

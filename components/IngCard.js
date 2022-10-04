@@ -24,7 +24,7 @@ export default IngCard;
 
 const styles = StyleSheet.create({
   card: {
-    width: 90,
+    width: 100,
     height: 180,
     marginBottom: 20,
     justifyContent: "center",
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#e9ecef",
   },
   img: {
-    width: 80,
+    width: 90,
     height: 100,
     resizeMode: "cover",
   },
