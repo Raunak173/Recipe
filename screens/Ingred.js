@@ -17,7 +17,7 @@ const Ingred = () => {
   const navigation = useNavigation();
   const [ing] = useState(recipe.ingredients);
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image source={back} style={styles.img} />

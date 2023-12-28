@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import menu from "../assets/menu.png";
 import close from "../assets/close.png";
 import cross from "../assets/cross.png";
@@ -17,8 +17,9 @@ import { useNavigation } from "@react-navigation/native";
 import cat from "../assets/cat.png";
 import home from "../assets/home.png";
 import search from "../assets/search.png";
+import ViewShot from "react-native-view-shot";
 
-const Home = () => {
+const Home = ({ viewShotRef }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearch, setIsSearch] = useState(false);
   const navigation = useNavigation();
@@ -35,93 +36,96 @@ const Home = () => {
     );
     setQuery("");
   };
+
   return (
-    <View>
-      {isOpen && (
-        <View style={styles.menu}>
-          <TouchableOpacity
-            onPress={() => setIsOpen(!isOpen)}
-            style={styles.btn}
-          >
-            <Image source={close} style={styles.img} />
-          </TouchableOpacity>
-          <View style={styles.menuCont}>
+    <View style={{ flex: 1 }}>
+      <ViewShot ref={viewShotRef} options={{ format: "png", quality: 1 }}>
+        {isOpen && (
+          <View style={styles.menu}>
             <TouchableOpacity
-              style={styles.tab}
-              onPress={() => {
-                setIsOpen(false);
-                navigation.navigate("Home");
-              }}
+              onPress={() => setIsOpen(!isOpen)}
+              style={styles.btn}
             >
-              <Image source={home} style={styles.tabImg} />
-              <Text style={styles.tabText}>Home</Text>
+              <Image source={close} style={styles.img} />
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.tab}
-              onPress={() => {
-                setIsOpen(false);
-                navigation.navigate("Categories");
-              }}
-            >
-              <Image source={cat} style={styles.tabImg} />
-              <Text style={styles.tabText}>Categories</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.tab}
-              onPress={() => {
-                setIsOpen(false);
-                setIsSearch(!isSearch);
-              }}
-            >
-              <Image source={search} style={styles.tabImg} />
-              <Text style={styles.tabText}>Search</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      )}
-      {isSearch && (
-        <>
-          <TextInput
-            style={styles.input}
-            value={query}
-            onChangeText={(text) => setQuery(text)}
-            onSubmitEditing={() => onSubmitted()}
-          />
-          <Image source={search} style={styles.stext} />
-          <TouchableOpacity
-            style={styles.cb}
-            onPress={() => setIsSearch(!isSearch)}
-          >
-            <Image source={cross} style={styles.cross} />
-          </TouchableOpacity>
-        </>
-      )}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => setIsOpen(!isOpen)}>
-          <Image source={menu} style={styles.img} />
-        </TouchableOpacity>
-        {isSearch === false && <Text style={styles.title}>Home</Text>}
-      </View>
-      <ScrollView>
-        <View style={styles.cardCont}>
-          {data.length === 0 && (
-            <Text style={styles.sorry}>
-              Sorry! No data found for given query :/
-            </Text>
-          )}
-          {data.length > 0 &&
-            data.map((recipe, index) => (
+            <View style={styles.menuCont}>
               <TouchableOpacity
-                key={index}
-                onPress={() =>
-                  navigation.navigate("IndCard", { recipe: recipe })
-                }
+                style={styles.tab}
+                onPress={() => {
+                  setIsOpen(false);
+                  navigation.navigate("Home");
+                }}
               >
-                <Card recipe={recipe} />
+                <Image source={home} style={styles.tabImg} />
+                <Text style={styles.tabText}>Home</Text>
               </TouchableOpacity>
-            ))}
+              <TouchableOpacity
+                style={styles.tab}
+                onPress={() => {
+                  setIsOpen(false);
+                  navigation.navigate("Categories");
+                }}
+              >
+                <Image source={cat} style={styles.tabImg} />
+                <Text style={styles.tabText}>Categories</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.tab}
+                onPress={() => {
+                  setIsOpen(false);
+                  setIsSearch(!isSearch);
+                }}
+              >
+                <Image source={search} style={styles.tabImg} />
+                <Text style={styles.tabText}>Search</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+        {isSearch && (
+          <>
+            <TextInput
+              style={styles.input}
+              value={query}
+              onChangeText={(text) => setQuery(text)}
+              onSubmitEditing={() => onSubmitted()}
+            />
+            <Image source={search} style={styles.stext} />
+            <TouchableOpacity
+              style={styles.cb}
+              onPress={() => setIsSearch(!isSearch)}
+            >
+              <Image source={cross} style={styles.cross} />
+            </TouchableOpacity>
+          </>
+        )}
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => setIsOpen(!isOpen)}>
+            <Image source={menu} style={styles.img} />
+          </TouchableOpacity>
+          {isSearch === false && <Text style={styles.title}>Home</Text>}
         </View>
-      </ScrollView>
+        <ScrollView>
+          <View style={styles.cardCont}>
+            {data.length === 0 && (
+              <Text style={styles.sorry}>
+                Sorry! No data found for given query :/
+              </Text>
+            )}
+            {data.length > 0 &&
+              data.map((recipe, index) => (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() =>
+                    navigation.navigate("IndCard", { recipe: recipe })
+                  }
+                >
+                  <Card recipe={recipe} key={index} />
+                </TouchableOpacity>
+              ))}
+          </View>
+        </ScrollView>
+      </ViewShot>
     </View>
   );
 };

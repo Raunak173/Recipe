@@ -15,7 +15,7 @@ import CatCard from "../components/CatCard";
 const Categories = () => {
   const navigation = useNavigation();
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Image source={back} style={styles.img} />
