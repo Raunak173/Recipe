@@ -7,7 +7,13 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import menu from "../assets/menu.png";
 import close from "../assets/close.png";
 import cross from "../assets/cross.png";
@@ -18,8 +24,9 @@ import cat from "../assets/cat.png";
 import home from "../assets/home.png";
 import search from "../assets/search.png";
 import ViewShot from "react-native-view-shot";
+import LayoutDataContext from "../LayoutDataContext";
 
-const Home = ({ viewShotRef }) => {
+const Home = ({ viewShotRef, setLData }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearch, setIsSearch] = useState(false);
   const navigation = useNavigation();
@@ -37,13 +44,77 @@ const Home = ({ viewShotRef }) => {
     setQuery("");
   };
 
+  //Will be added by clients to target elements
+  const cardRefs = useRef([]); // Refs array
+  const homeTextRef = useRef(null);
+
+  // Context to store layout data
+  const { addLayoutData } = useContext(LayoutDataContext);
+
+  // Update refs array when data changes
+  useEffect(() => {
+    cardRefs.current = data.map(
+      (_, i) => cardRefs.current[i] || React.createRef()
+    );
+  }, [data]);
+
+  let idCounter = 0;
+
+  const generateUniqueId = () => {
+    const id = idCounter;
+    idCounter += 1;
+    return id;
+  };
+
+  const captureLayoutData = () => {
+    const measureLayout = (ref) =>
+      new Promise((resolve) => {
+        if (ref) {
+          ref.measure((x, y, width, height, pageX, pageY) => {
+            const id = generateUniqueId();
+            resolve({
+              x: pageX,
+              y: pageY,
+              width,
+              height,
+              componentId: id,
+              name: `name${id}`,
+            });
+          });
+        } else {
+          resolve(null);
+        }
+      });
+
+    const promises = [
+      measureLayout(homeTextRef.current),
+      ...cardRefs.current.map((ref) => measureLayout(ref)),
+    ];
+
+    Promise.all(promises).then((layoutDataArray) => {
+      const filteredLayoutData = layoutDataArray.filter(
+        (data) => data !== null
+      );
+      addLayoutData(filteredLayoutData);
+      setLData(filteredLayoutData);
+      console.log("Layout data array:", filteredLayoutData);
+    });
+  };
+
+  // useEffect(() => {
+  //   onCaptureLayoutData(captureLayoutData);
+  // }, []);
+
   return (
     <View style={{ flex: 1 }}>
       <ViewShot ref={viewShotRef} options={{ format: "png", quality: 1 }}>
         {isOpen && (
           <View style={styles.menu}>
             <TouchableOpacity
-              onPress={() => setIsOpen(!isOpen)}
+              onPress={() => {
+                setIsOpen(!isOpen);
+                captureLayoutData();
+              }}
               style={styles.btn}
             >
               <Image source={close} style={styles.img} />
@@ -57,7 +128,9 @@ const Home = ({ viewShotRef }) => {
                 }}
               >
                 <Image source={home} style={styles.tabImg} />
-                <Text style={styles.tabText}>Home</Text>
+                <Text style={styles.tabText} ref={homeTextRef}>
+                  Home
+                </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.tab}
@@ -107,22 +180,17 @@ const Home = ({ viewShotRef }) => {
         </View>
         <ScrollView>
           <View style={styles.cardCont}>
-            {data.length === 0 && (
-              <Text style={styles.sorry}>
-                Sorry! No data found for given query :/
-              </Text>
-            )}
-            {data.length > 0 &&
-              data.map((recipe, index) => (
-                <TouchableOpacity
-                  key={index}
-                  onPress={() =>
-                    navigation.navigate("IndCard", { recipe: recipe })
-                  }
-                >
-                  <Card recipe={recipe} key={index} />
-                </TouchableOpacity>
-              ))}
+            {data.map((recipe, index) => (
+              <TouchableOpacity
+                key={index}
+                ref={(el) => (cardRefs.current[index] = el)} // Assign ref here
+                onPress={() =>
+                  navigation.navigate("IndCard", { recipe: recipe })
+                }
+              >
+                <Card recipe={recipe} />
+              </TouchableOpacity>
+            ))}
           </View>
         </ScrollView>
       </ViewShot>

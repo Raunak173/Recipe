@@ -25,7 +25,9 @@ export default function App() {
   const viewShotRef = useRef();
   const [openedViaDeepLink, setOpenedViaDeepLink] = useState(true);
 
-  const { layoutData } = useContext(LayoutDataContext);
+  const { layoutData, addLayoutData } = useContext(LayoutDataContext);
+
+  const [lData, setLData] = useState(null);
 
   useEffect(() => {
     // Deep link handling
@@ -65,7 +67,7 @@ export default function App() {
       // Capture the screenshot
       const screenshotUri = await viewShotRef.current.capture();
 
-      console.log("layout", layoutData);
+      console.log("layout", lData);
       console.log("uri", screenshotUri);
 
       getImageSize(screenshotUri);
@@ -82,11 +84,11 @@ export default function App() {
         JSON.stringify({ screenSize: `1080x1920` })
       );
       formData.append("socketId", "64d7ade056ddebf51f96654a");
-      formData.append("name", "Raunak");
+      formData.append("name", "Raunak Recipe Tooltip");
       formData.append("pageId", Date.now());
       formData.append("appVersion", "1.0.0");
       formData.append("tag", "1");
-      formData.append("components", layoutData);
+      formData.append("components", lData);
 
       // Send POST request
       const response = await axios.post(
@@ -121,7 +123,12 @@ export default function App() {
           <Stack.Screen
             name="Home"
             options={{ headerShown: false }}
-            children={() => <HomeWithCoordinates viewShotRef={viewShotRef} />}
+            children={() => (
+              <HomeWithCoordinates
+                viewShotRef={viewShotRef}
+                setLData={setLData}
+              />
+            )}
           />
           <Stack.Screen
             name="Categories"
@@ -158,7 +165,7 @@ export default function App() {
 const styles = StyleSheet.create({
   captureButton: {
     position: "absolute",
-    top: 10,
+    top: 0,
     backgroundColor: "#007bff",
     padding: 10,
     borderRadius: 5,
