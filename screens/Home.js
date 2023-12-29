@@ -25,8 +25,9 @@ import home from "../assets/home.png";
 import search from "../assets/search.png";
 import ViewShot from "react-native-view-shot";
 import LayoutDataContext from "../LayoutDataContext";
+import Tooltip from "../components/Tooltip";
 
-const Home = ({ viewShotRef, setLData }) => {
+const Home = ({ viewShotRef, setLData, nudges }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearch, setIsSearch] = useState(false);
   const navigation = useNavigation();
@@ -177,6 +178,7 @@ const Home = ({ viewShotRef, setLData }) => {
             </TouchableOpacity>
           </>
         )}
+        {nudges.length > 0 && <Tooltip tooltipInfo={nudges[0]} />}
         <View style={styles.header}>
           <TouchableOpacity onPress={() => setIsOpen(!isOpen)}>
             <Image source={menu} style={styles.img} />

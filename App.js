@@ -28,6 +28,65 @@ export default function App() {
   const { layoutData, addLayoutData } = useContext(LayoutDataContext);
 
   const [lData, setLData] = useState(null);
+  const [gsId, setGSId] = useState("");
+  const [nudges, setNudges] = useState([]);
+
+  useEffect(() => {
+    const fetchGameSettings = async () => {
+      try {
+        const data = {
+          sessionId: "6y08052-198a-21we-a03c-75a7b90",
+          type: "raunak_react_native",
+        };
+
+        const apiUrl = `https://stag-pointsystem.nudgenow.com/api/v1/events/e/track`;
+
+        const response = await axios.post(apiUrl, data, {
+          headers: {
+            authorization: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1OGE2ZmZiNzA1ZmEzN2JiZTcxZmFiZiIsImNsaWVudElkIjoiNjRkN2FkZTA1NmRkZWJmNTFmOTY2NTRhIiwicm9sZSI6InVzZXIiLCJpYXQiOjE3MDM1NzE0NTEsImV4cCI6MTc4MTMzMTQ1MX0.qXj1GjOmLvrpBnN1aIueBGONHUEufxxn0OGXMqdcXqU`,
+          },
+        });
+
+        setGSId(
+          response?.data?.data?.campaigns?.length > 0
+            ? response?.data?.data?.campaigns[0]?.gameSettingsId
+            : ""
+        );
+        console.log(gsId);
+      } catch (error) {
+        console.error("Error getching the gs id:", error);
+      }
+    };
+    fetchGameSettings();
+  }, []);
+
+  useEffect(() => {
+    if (gsId) {
+      const fetchNudges = async () => {
+        try {
+          const nudgeId = `${gsId}`;
+          const url = `https://stag-pointsystem.nudgenow.com/api/v1/nudges/n/get/${nudgeId}`;
+
+          // Make the API call
+          const response = await axios.get(url, {
+            headers: {
+              authorization:
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGQ3YWRlMDU2ZGRlYmY1MWY5NjY1NGEiLCJjbGllbnRJZCI6IjY0ZDdhZGUwNTZkZGViZjUxZjk2NjU0YSIsInJvbGUiOiJvd25lciIsImlhdCI6MTcwMzU3MTMyOCwiZXhwIjoxNzA2MTYzMzI4fQ.CAZingSQkUTa4fOkte1k8ufmydykdsgVZaZY1rAjYxA",
+            },
+          });
+
+          const nudgesData = response?.data?.data?.nudges;
+          setNudges(nudgesData);
+          console.log("Nudge", nudges);
+        } catch (error) {
+          console.error("Error fetching nudges:", error);
+        }
+      };
+
+      // Call the function to fetch nudges
+      fetchNudges();
+    }
+  }, [gsId]); // Depend on gsId
 
   useEffect(() => {
     // Deep link handling
@@ -130,6 +189,7 @@ export default function App() {
               <HomeWithCoordinates
                 viewShotRef={viewShotRef}
                 setLData={setLData}
+                nudges={nudges}
               />
             )}
           />
