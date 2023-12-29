@@ -94,7 +94,12 @@ const Tooltip = ({ tooltipInfo }) => {
       borderTopColor: bgColor,
       alignSelf: "center",
       position: "absolute",
-      left: x_coordinate,
+      left:
+        tooltipInfo?.design?.toolTipArrow === "center"
+          ? x_coordinate
+          : tooltipInfo?.design?.toolTipArrow === "left"
+          ? x_coordinate - 30
+          : x_coordinate + 30,
       top: y_coordinate * 2 + 10,
       zIndex: 10,
     },
@@ -128,7 +133,12 @@ const Tooltip = ({ tooltipInfo }) => {
       borderBottomColor: bgColor,
       alignSelf: "center",
       position: "absolute",
-      left: x_coordinate,
+      left:
+        tooltipInfo?.design?.toolTipArrow === "center"
+          ? x_coordinate
+          : tooltipInfo?.design?.toolTipArrow === "left"
+          ? x_coordinate - 30
+          : x_coordinate + 30,
       top: 2 * y_coordinate,
       zIndex: 10,
     },
