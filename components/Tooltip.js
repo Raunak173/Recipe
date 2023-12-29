@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-const Tooltip = ({ tooltipInfo }) => {
+const Tooltip = ({ tooltipInfo, setIdx, total, idx }) => {
   console.log("<<<<", tooltipInfo);
   // Extracting relevant data
   const { content, design, actionButton } = tooltipInfo;
@@ -11,18 +11,17 @@ const Tooltip = ({ tooltipInfo }) => {
   // Styles based on the data
   const tooltipStyles = StyleSheet.create({
     topContainer: {
-      position: "absolute",
+      position: "relative",
       left: x_coordinate - 90,
       top: y_coordinate,
       backgroundColor: bgColor,
       borderColor: borderColor,
       borderRadius: roundness,
       padding: 10,
-      zIndex: 10,
       alignItems: "center",
     },
     leftContainer: {
-      position: "absolute",
+      position: "relative",
       left: x_coordinate + 30,
       top: y_coordinate + 30,
       backgroundColor: bgColor,
@@ -33,7 +32,7 @@ const Tooltip = ({ tooltipInfo }) => {
       alignItems: "center",
     },
     bottomContainer: {
-      position: "absolute",
+      position: "relative",
       left: x_coordinate - 90,
       top: y_coordinate + 120,
       backgroundColor: bgColor,
@@ -44,7 +43,7 @@ const Tooltip = ({ tooltipInfo }) => {
       alignItems: "center",
     },
     rightContainer: {
-      position: "absolute",
+      position: "relative",
       left: x_coordinate - 240,
       top: y_coordinate + 30,
       backgroundColor: bgColor,
@@ -184,7 +183,16 @@ const Tooltip = ({ tooltipInfo }) => {
         </Text>
         <Text style={tooltipStyles.body}>{tooltipInfo?.content?.body}</Text>
         {actionButton.hasAdvancedOptions && (
-          <TouchableOpacity style={tooltipStyles.button}>
+          <TouchableOpacity
+            style={tooltipStyles.button}
+            onPress={() => {
+              if (idx + 1 < total) {
+                setIdx((prevIdx) => prevIdx + 1);
+              } else {
+                setIdx(0);
+              }
+            }}
+          >
             <Text style={tooltipStyles.buttonText}>
               {actionButton.buttonText}
             </Text>

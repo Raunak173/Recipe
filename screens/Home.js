@@ -30,6 +30,7 @@ import Tooltip from "../components/Tooltip";
 const Home = ({ viewShotRef, setLData, nudges }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearch, setIsSearch] = useState(false);
+  let [idx, setIdx] = useState(0);
   const navigation = useNavigation();
 
   const [data, setData] = useState(recipes);
@@ -178,7 +179,6 @@ const Home = ({ viewShotRef, setLData, nudges }) => {
             </TouchableOpacity>
           </>
         )}
-        {nudges.length > 0 && <Tooltip tooltipInfo={nudges[0]} />}
         <View style={styles.header}>
           <TouchableOpacity onPress={() => setIsOpen(!isOpen)}>
             <Image source={menu} style={styles.img} />
@@ -195,6 +195,14 @@ const Home = ({ viewShotRef, setLData, nudges }) => {
                   navigation.navigate("IndCard", { recipe: recipe })
                 }
               >
+                {nudges.length > 0 && index === idx && (
+                  <Tooltip
+                    tooltipInfo={nudges[idx]}
+                    setIdx={setIdx}
+                    total={nudges.length}
+                    idx={idx}
+                  />
+                )}
                 <Card recipe={recipe} />
               </TouchableOpacity>
             ))}
