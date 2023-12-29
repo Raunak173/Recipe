@@ -10,10 +10,43 @@ const Tooltip = ({ tooltipInfo }) => {
 
   // Styles based on the data
   const tooltipStyles = StyleSheet.create({
-    container: {
+    topContainer: {
       position: "absolute",
       left: x_coordinate - 90,
       top: y_coordinate,
+      backgroundColor: bgColor,
+      borderColor: borderColor,
+      borderRadius: roundness,
+      padding: 10,
+      zIndex: 10,
+      alignItems: "center",
+    },
+    leftContainer: {
+      position: "absolute",
+      left: x_coordinate + 30,
+      top: y_coordinate + 30,
+      backgroundColor: bgColor,
+      borderColor: borderColor,
+      borderRadius: roundness,
+      padding: 10,
+      zIndex: 10,
+      alignItems: "center",
+    },
+    bottomContainer: {
+      position: "absolute",
+      left: x_coordinate - 90,
+      top: y_coordinate + 120,
+      backgroundColor: bgColor,
+      borderColor: borderColor,
+      borderRadius: roundness,
+      padding: 10,
+      zIndex: 10,
+      alignItems: "center",
+    },
+    rightContainer: {
+      position: "absolute",
+      left: x_coordinate - 240,
+      top: y_coordinate + 30,
       backgroundColor: bgColor,
       borderColor: borderColor,
       borderRadius: roundness,
@@ -48,13 +81,13 @@ const Tooltip = ({ tooltipInfo }) => {
       fontSize: actionButton.buttonFontSize / 2,
       fontWeight: `${actionButton.buttonFontWeight}`,
     },
-    triangleTip: {
+    topTriangleTip: {
       width: 0,
       height: 0,
       backgroundColor: "transparent",
       borderStyle: "solid",
-      borderLeftWidth: 10,
-      borderRightWidth: 10,
+      borderLeftWidth: 20,
+      borderRightWidth: 20,
       borderTopWidth: 20,
       borderLeftColor: "transparent",
       borderRightColor: "transparent",
@@ -65,11 +98,77 @@ const Tooltip = ({ tooltipInfo }) => {
       top: y_coordinate * 2 + 10,
       zIndex: 10,
     },
+    leftTriangleTip: {
+      width: 0,
+      height: 0,
+      backgroundColor: "transparent",
+      borderStyle: "solid",
+      borderTopWidth: 20,
+      borderBottomWidth: 20,
+      borderRightWidth: 20,
+      borderTopColor: "transparent",
+      borderBottomColor: "transparent",
+      borderRightColor: bgColor,
+      alignSelf: "center",
+      position: "absolute",
+      left: x_coordinate + 10,
+      top: y_coordinate + 60,
+      zIndex: 10,
+    },
+    bottomTriangleTip: {
+      width: 0,
+      height: 0,
+      backgroundColor: "transparent",
+      borderStyle: "solid",
+      borderLeftWidth: 20,
+      borderRightWidth: 20,
+      borderBottomWidth: 20,
+      borderLeftColor: "transparent",
+      borderRightColor: "transparent",
+      borderBottomColor: bgColor,
+      alignSelf: "center",
+      position: "absolute",
+      left: x_coordinate,
+      top: 2 * y_coordinate,
+      zIndex: 10,
+    },
+    rightTriangleTip: {
+      width: 0,
+      height: 0,
+      backgroundColor: "transparent",
+      borderStyle: "solid",
+      borderTopWidth: 20,
+      borderBottomWidth: 20,
+      borderLeftWidth: 20,
+      borderTopColor: "transparent",
+      borderBottomColor: "transparent",
+      borderLeftColor: bgColor,
+      alignSelf: "center",
+      position: "absolute",
+      left: x_coordinate - 20,
+      top: y_coordinate + 60,
+      zIndex: 10,
+    },
   });
+
+  const getContainerStyle = () => {
+    switch (tooltipInfo?.design?.toolTipPosition) {
+      case "top":
+        return tooltipStyles.topContainer;
+      case "bottom":
+        return tooltipStyles.bottomContainer;
+      case "left":
+        return tooltipStyles.leftContainer;
+      case "right":
+        return tooltipStyles.rightContainer;
+      default:
+        return tooltipStyles.topContainer;
+    }
+  };
 
   return (
     <>
-      <View style={tooltipStyles.container}>
+      <View style={getContainerStyle()}>
         <Text style={tooltipStyles.heading}>
           {tooltipInfo?.content?.heading}
         </Text>
@@ -82,7 +181,18 @@ const Tooltip = ({ tooltipInfo }) => {
           </TouchableOpacity>
         )}
       </View>
-      <View style={tooltipStyles.triangleTip}></View>
+      {tooltipInfo?.design?.toolTipPosition === "top" && (
+        <View style={tooltipStyles.topTriangleTip} />
+      )}
+      {tooltipInfo?.design?.toolTipPosition === "bottom" && (
+        <View style={tooltipStyles.bottomTriangleTip} />
+      )}
+      {tooltipInfo?.design?.toolTipPosition === "left" && (
+        <View style={tooltipStyles.leftTriangleTip} />
+      )}
+      {tooltipInfo?.design?.toolTipPosition === "right" && (
+        <View style={tooltipStyles.rightTriangleTip} />
+      )}
     </>
   );
 };
