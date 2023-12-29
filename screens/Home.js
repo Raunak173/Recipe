@@ -73,12 +73,13 @@ const Home = ({ viewShotRef, setLData }) => {
           ref.measure((x, y, width, height, pageX, pageY) => {
             const id = generateUniqueId();
             resolve({
-              x: pageX,
-              y: pageY,
-              width,
-              height,
+              x: pageX * 3.6,
+              y: pageY * 4.7,
+              width: width * 3.6,
+              height: height,
               componentId: id,
               name: `name${id}`,
+              properties: null,
             });
           });
         } else {
@@ -106,8 +107,12 @@ const Home = ({ viewShotRef, setLData }) => {
   // }, []);
 
   return (
-    <View style={{ flex: 1 }}>
-      <ViewShot ref={viewShotRef} options={{ format: "png", quality: 1 }}>
+    <ViewShot
+      ref={viewShotRef}
+      options={{ format: "png", quality: 1 }}
+      style={{ flex: 1 }}
+    >
+      <View>
         {isOpen && (
           <View style={styles.menu}>
             <TouchableOpacity
@@ -193,8 +198,8 @@ const Home = ({ viewShotRef, setLData }) => {
             ))}
           </View>
         </ScrollView>
-      </ViewShot>
-    </View>
+      </View>
+    </ViewShot>
   );
 };
 

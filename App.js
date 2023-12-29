@@ -67,7 +67,6 @@ export default function App() {
       // Capture the screenshot
       const screenshotUri = await viewShotRef.current.capture();
 
-      console.log("layout", lData);
       console.log("uri", screenshotUri);
 
       getImageSize(screenshotUri);
@@ -81,14 +80,18 @@ export default function App() {
       });
       formData.append(
         "properties",
-        JSON.stringify({ screenSize: `1080x1920` })
+        JSON.stringify({ screenSize: `720x1415` })
+        // JSON.stringify({ screenSize: `720x1648` })
       );
       formData.append("socketId", "64d7ade056ddebf51f96654a");
       formData.append("name", "Raunak Recipe Tooltip");
       formData.append("pageId", Date.now());
-      formData.append("appVersion", "1.0.0");
+      formData.append("appVersion", "1.0.1");
       formData.append("tag", "1");
-      formData.append("components", lData);
+      // formData.append("properties", null);
+      console.log("components", JSON.stringify(lData));
+      formData.append("components", JSON.stringify(lData));
+      // formData.append("components", []);
 
       // Send POST request
       const response = await axios.post(
@@ -170,5 +173,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     right: 20,
+    zIndex: 1,
+    width: 100,
   },
 });
