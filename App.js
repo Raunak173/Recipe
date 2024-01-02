@@ -143,7 +143,7 @@ export default function App() {
         // JSON.stringify({ screenSize: `720x1648` })
       );
       formData.append("socketId", "64d7ade056ddebf51f96654a");
-      formData.append("name", "Raunak Recipe Tooltip");
+      formData.append("name", "Raunak Recipe Tooltip final");
       formData.append("pageId", Date.now());
       formData.append("appVersion", "1.0.1");
       formData.append("tag", "1");

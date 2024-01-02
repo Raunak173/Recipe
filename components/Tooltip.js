@@ -11,7 +11,7 @@ const Tooltip = ({ tooltipInfo, setIdx, total, idx }) => {
   // Styles based on the data
   const tooltipStyles = StyleSheet.create({
     topContainer: {
-      position: "relative",
+      position: "absolute",
       left: x_coordinate - 90,
       top: y_coordinate,
       backgroundColor: bgColor,
@@ -19,9 +19,10 @@ const Tooltip = ({ tooltipInfo, setIdx, total, idx }) => {
       borderRadius: roundness,
       padding: 10,
       alignItems: "center",
+      zIndex: 1000,
     },
     leftContainer: {
-      position: "relative",
+      position: "absolute",
       left: x_coordinate + 30,
       top: y_coordinate + 30,
       backgroundColor: bgColor,
@@ -30,20 +31,22 @@ const Tooltip = ({ tooltipInfo, setIdx, total, idx }) => {
       padding: 10,
       zIndex: 10,
       alignItems: "center",
+      zIndex: 1000,
     },
     bottomContainer: {
-      position: "relative",
+      position: "absolute",
       left: x_coordinate - 90,
-      top: y_coordinate + 120,
+      top: y_coordinate + 90,
       backgroundColor: bgColor,
       borderColor: borderColor,
       borderRadius: roundness,
       padding: 10,
       zIndex: 10,
       alignItems: "center",
+      zIndex: 1000,
     },
     rightContainer: {
-      position: "relative",
+      position: "absolute",
       left: x_coordinate - 240,
       top: y_coordinate + 30,
       backgroundColor: bgColor,
@@ -52,6 +55,7 @@ const Tooltip = ({ tooltipInfo, setIdx, total, idx }) => {
       padding: 10,
       zIndex: 10,
       alignItems: "center",
+      zIndex: 1000,
     },
     heading: {
       fontSize: heading?.headingFontSize,
@@ -138,7 +142,7 @@ const Tooltip = ({ tooltipInfo, setIdx, total, idx }) => {
           : tooltipInfo?.design?.toolTipArrow === "left"
           ? x_coordinate - 30
           : x_coordinate + 30,
-      top: 2 * y_coordinate,
+      top: 2 * y_coordinate - 30,
       zIndex: 10,
     },
     rightTriangleTip: {
@@ -188,8 +192,6 @@ const Tooltip = ({ tooltipInfo, setIdx, total, idx }) => {
             onPress={() => {
               if (idx + 1 < total) {
                 setIdx((prevIdx) => prevIdx + 1);
-              } else {
-                setIdx(0);
               }
             }}
           >

@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: "center",
     backgroundColor: "#e9ecef",
-    zIndex: -10,
+    zIndex: -1000,
   },
   text: {
     fontWeight: "500",

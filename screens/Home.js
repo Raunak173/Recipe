@@ -1,4 +1,5 @@
 import {
+  Dimensions,
   Image,
   ScrollView,
   StyleSheet,
@@ -25,17 +26,22 @@ import home from "../assets/home.png";
 import search from "../assets/search.png";
 import ViewShot from "react-native-view-shot";
 import LayoutDataContext from "../LayoutDataContext";
-import Tooltip from "../components/Tooltip";
+import NudgeMaker from "../components/NudgeMaker";
 
 const Home = ({ viewShotRef, setLData, nudges }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearch, setIsSearch] = useState(false);
-  let [idx, setIdx] = useState(0);
+  const [idx, setIdx] = useState(0);
+  const [isSpotlight, setIsSpotlight] = useState(false);
+  const [slColor, setSlColor] = useState("rgba(65,117,5,0.20)");
   const navigation = useNavigation();
+  const elIdx = nudges[idx]?.location?.element;
+
+  console.log("El Idx", elIdx);
 
   const [data, setData] = useState(recipes);
   const [query, setQuery] = useState("");
-  const [hmap, setHmap] = useState([]);
+  const { width, height } = Dimensions.get("window");
 
   const onSubmitted = () => {
     setData(
@@ -74,15 +80,23 @@ const Home = ({ viewShotRef, setLData, nudges }) => {
         if (ref) {
           ref.measure((x, y, width, height, pageX, pageY) => {
             const id = generateUniqueId();
-            resolve({
-              x: pageX * 3.6,
-              y: pageY * 4.7,
-              width: width * 3.6,
-              height: height,
-              componentId: id,
-              name: `name${id}`,
-              properties: null,
-            });
+            // Only process IDs from 1 to 6
+            if (id >= 1 && id <= 6) {
+              const level = Math.ceil(id / 2);
+              const additionalY = 100 * (level - 1);
+              const additionalHeight = 100 * (level - 1);
+              resolve({
+                x: pageX * 3.6,
+                y: pageY * 2.83 + additionalY,
+                width: width * 3.6,
+                height: height * 2.83 + additionalHeight,
+                componentId: id,
+                name: `name${id}`,
+                properties: null,
+              });
+            } else {
+              resolve(null);
+            }
           });
         } else {
           resolve(null);
@@ -114,7 +128,7 @@ const Home = ({ viewShotRef, setLData, nudges }) => {
       options={{ format: "png", quality: 1 }}
       style={{ flex: 1 }}
     >
-      <View>
+      <View style={{ zIndex: -1000 }}>
         {isOpen && (
           <View style={styles.menu}>
             <TouchableOpacity
@@ -179,6 +193,14 @@ const Home = ({ viewShotRef, setLData, nudges }) => {
             </TouchableOpacity>
           </>
         )}
+        {isSpotlight && (
+          <View
+            style={[
+              styles.overlay,
+              { backgroundColor: slColor, width: width, height: height },
+            ]}
+          />
+        )}
         <View style={styles.header}>
           <TouchableOpacity onPress={() => setIsOpen(!isOpen)}>
             <Image source={menu} style={styles.img} />
@@ -188,23 +210,28 @@ const Home = ({ viewShotRef, setLData, nudges }) => {
         <ScrollView>
           <View style={styles.cardCont}>
             {data.map((recipe, index) => (
-              <TouchableOpacity
-                key={index}
-                ref={(el) => (cardRefs.current[index] = el)} // Assign ref here
-                onPress={() =>
-                  navigation.navigate("IndCard", { recipe: recipe })
-                }
-              >
-                {nudges.length > 0 && index === idx && (
-                  <Tooltip
-                    tooltipInfo={nudges[idx]}
+              <React.Fragment key={index}>
+                {console.log({ elIdx, index })}
+                {elIdx - 1 == index && nudges.length > 0 && (
+                  <NudgeMaker
+                    nudgeInfo={nudges[idx]}
                     setIdx={setIdx}
                     total={nudges.length}
                     idx={idx}
+                    setIsSpotlight={setIsSpotlight}
+                    setSlColor={setSlColor}
+                    renderCard={() => <Card recipe={recipe} />}
                   />
                 )}
-                <Card recipe={recipe} />
-              </TouchableOpacity>
+                <TouchableOpacity
+                  ref={(el) => (cardRefs.current[index] = el)}
+                  onPress={() =>
+                    navigation.navigate("IndCard", { recipe: recipe })
+                  }
+                >
+                  <Card recipe={recipe} />
+                </TouchableOpacity>
+              </React.Fragment>
             ))}
           </View>
         </ScrollView>
@@ -237,6 +264,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "space-between",
     marginBottom: 150,
+    zIndex: -1000,
   },
   menu: {
     width: 300,
@@ -298,5 +326,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 20,
     lineHeight: 25,
+  },
+  overlay: {
+    justifyContent: "center",
+    alignItems: "center",
+    // zIndex: 100,
+    position: "absolute",
   },
 });
