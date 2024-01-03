@@ -211,7 +211,6 @@ const Home = ({ viewShotRef, setLData, nudges }) => {
           <View style={styles.cardCont}>
             {data.map((recipe, index) => (
               <React.Fragment key={index}>
-                {console.log({ elIdx, index })}
                 {elIdx - 1 == index && nudges.length > 0 && (
                   <NudgeMaker
                     nudgeInfo={nudges[idx]}
@@ -220,7 +219,9 @@ const Home = ({ viewShotRef, setLData, nudges }) => {
                     idx={idx}
                     setIsSpotlight={setIsSpotlight}
                     setSlColor={setSlColor}
-                    renderCard={() => <Card recipe={recipe} />}
+                    renderCard={() => (
+                      <Card recipe={recipe} isSpotlight={isSpotlight} />
+                    )}
                   />
                 )}
                 <TouchableOpacity
@@ -330,7 +331,7 @@ const styles = StyleSheet.create({
   overlay: {
     justifyContent: "center",
     alignItems: "center",
-    // zIndex: 100,
+    zIndex: 10,
     position: "absolute",
   },
 });

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Image } from "react-native";
 import {
   View,
   Text,
@@ -39,9 +40,36 @@ const Spotlight = ({
 }) => {
   const { content, media, design, actionButton } = spotlightInfo;
 
+  const [imageUri, setImageUri] = useState("");
+
+  useEffect(() => {
+    // Fetch image using the provided API and image ID
+    const fetchImage = async () => {
+      try {
+        const response = await fetch(
+          `https://dev.dashboard.api.nudgenow.com/images/${design?.arrowImageId}`,
+          {
+            headers: {
+              Authorization:
+                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGQ3YWRlMDU2ZGRlYmY1MWY5NjY1NGEiLCJjbGllbnRJZCI6IjY0ZDdhZGUwNTZkZGViZjUxZjk2NjU0YSIsInJvbGUiOiJvd25lciIsImlhdCI6MTcwNDI3MTUyMywiZXhwIjoxNzA2ODYzNTIzfQ.QhDpt0_Zp1VoeOZJ4_FZAXpUaoHQLDYJoacdtOnTwKQ",
+            },
+          }
+        );
+        const data = await response.json();
+        setImageUri(data?.data?.imageUrl);
+        console.log("Image", data?.data?.imageUrl);
+      } catch (error) {
+        console.error("Error fetching image", error);
+      }
+    };
+
+    fetchImage();
+  }, [media.imageId]);
+
   const rgbColor = hexToRgb(design.bgColor);
   console.log("rgbColor", rgbColor);
   setSlColor(`rgba(${rgbColor},${design.bgOpacity / 100})`);
+  // setSlColor(`rgba(${rgbColor},0.30)`);
 
   // Text Styles
   const headingStyle = {
@@ -64,8 +92,8 @@ const Spotlight = ({
   const buttonStyle = {
     backgroundColor: actionButton.buttonColor,
     borderRadius: actionButton.roundness,
-    padding: actionButton.padding.top, // Assuming uniform padding
-    margin: actionButton.margin.top, // Assuming uniform margin
+    padding: actionButton.padding.top,
+    margin: actionButton.margin.top,
   };
 
   const buttonText = actionButton.buttonText;
@@ -75,32 +103,47 @@ const Spotlight = ({
     alignItems: "center",
     left: content.x_coordinate,
     top: content.y_coordinate - 350,
-    zIndex: 1000,
+    zIndex: 9999,
   };
 
   const selectedContainer = {
     position: "absolute",
-    borderWidth: 1,
     width: 130,
     height: 190,
     backgroundColor: "white",
+    zIndex: 9999,
   };
+
+  const imageStyle = {
+    left: design.spotlightX + 30,
+    top: design.spotlightY - 240,
+    height: 80,
+    width: 20,
+    position: "absolute",
+    zIndex: 10,
+  };
+
+  const handlePress = () => {
+    if (idx + 1 < total) {
+      setIdx((prevIdx) => prevIdx + 1);
+      setIsSpotlight(false);
+    }
+  };
+
+  useEffect(() => {
+    const timeout = setTimeout(handlePress, 3000);
+
+    return () => clearTimeout(timeout);
+  }, [idx]);
 
   return (
     <>
       <View style={selectedContainer}>{renderCard()}</View>
+      <Image source={{ uri: imageUri }} style={imageStyle} />
       <View style={containerStyle}>
         <Text style={headingStyle}>{content.heading}</Text>
         <Text style={bodyStyle}>{content.body}</Text>
-        <TouchableOpacity
-          style={buttonStyle}
-          onPress={() => {
-            if (idx + 1 < total) {
-              setIdx((prevIdx) => prevIdx + 1);
-              setIsSpotlight(false);
-            }
-          }}
-        >
+        <TouchableOpacity style={buttonStyle} onPress={handlePress}>
           <Text
             style={{
               color: actionButton.buttonTextColor,

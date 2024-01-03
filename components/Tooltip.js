@@ -47,7 +47,7 @@ const Tooltip = ({ tooltipInfo, setIdx, total, idx }) => {
     },
     rightContainer: {
       position: "absolute",
-      left: x_coordinate - 240,
+      left: x_coordinate - 180,
       top: y_coordinate + 30,
       backgroundColor: bgColor,
       borderColor: borderColor,
@@ -158,7 +158,7 @@ const Tooltip = ({ tooltipInfo, setIdx, total, idx }) => {
       borderLeftColor: bgColor,
       alignSelf: "center",
       position: "absolute",
-      left: x_coordinate - 20,
+      left: x_coordinate - 60,
       top: y_coordinate + 60,
       zIndex: 10,
     },
@@ -171,9 +171,9 @@ const Tooltip = ({ tooltipInfo, setIdx, total, idx }) => {
       case "bottom":
         return tooltipStyles.bottomContainer;
       case "left":
-        return tooltipStyles.leftContainer;
-      case "right":
         return tooltipStyles.rightContainer;
+      case "right":
+        return tooltipStyles.leftContainer;
       default:
         return tooltipStyles.topContainer;
     }
@@ -208,10 +208,10 @@ const Tooltip = ({ tooltipInfo, setIdx, total, idx }) => {
         <View style={tooltipStyles.bottomTriangleTip} />
       )}
       {tooltipInfo?.design?.toolTipPosition === "left" && (
-        <View style={tooltipStyles.leftTriangleTip} />
+        <View style={tooltipStyles.rightTriangleTip} />
       )}
       {tooltipInfo?.design?.toolTipPosition === "right" && (
-        <View style={tooltipStyles.rightTriangleTip} />
+        <View style={tooltipStyles.leftTriangleTip} />
       )}
     </>
   );

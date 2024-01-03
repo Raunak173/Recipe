@@ -2,9 +2,17 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { categories } from "../data";
 
-const Card = ({ recipe }) => {
+const Card = ({ recipe, isSpotlight }) => {
   return (
-    <View style={styles.card}>
+    <View
+      style={[
+        styles.card,
+        {
+          backgroundColor: isSpotlight && "white",
+          elevation: isSpotlight ? 100 : 0,
+        },
+      ]}
+    >
       <Image source={{ uri: recipe.photo_url }} style={styles.img} />
       <Text style={styles.text}>{recipe.title}</Text>
       {categories.map((category) => {
