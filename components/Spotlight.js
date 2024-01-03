@@ -101,13 +101,14 @@ const Spotlight = ({
   const containerStyle = {
     justifyContent: "center",
     alignItems: "center",
-    left: content.x_coordinate,
-    top: content.y_coordinate - 350,
+    left: content.x_coordinate + 45,
+    top: content.y_coordinate - 320,
     zIndex: 9999,
+    position: "absolute",
   };
 
   const selectedContainer = {
-    position: "absolute",
+    position: "relative",
     width: 130,
     height: 190,
     backgroundColor: "white",
@@ -115,8 +116,8 @@ const Spotlight = ({
   };
 
   const imageStyle = {
-    left: design.spotlightX + 30,
-    top: design.spotlightY - 240,
+    left: design.spotlightX + 90,
+    top: design.spotlightY - 220,
     height: 80,
     width: 20,
     position: "absolute",
@@ -132,7 +133,6 @@ const Spotlight = ({
 
   useEffect(() => {
     const timeout = setTimeout(handlePress, 3000);
-
     return () => clearTimeout(timeout);
   }, [idx]);
 

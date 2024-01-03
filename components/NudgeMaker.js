@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import Tooltip from "./Tooltip";
 import Spotlight from "./Spotlight";
+import Coachmark from "./Coachmark";
 
 const NudgeMaker = ({
   nudgeInfo,
@@ -32,6 +33,15 @@ const NudgeMaker = ({
           idx={idx}
           setSlColor={setSlColor}
           setIsSpotlight={setIsSpotlight}
+          renderCard={renderCard}
+        />
+      )}
+      {type === "coachmark" && (
+        <Coachmark
+          coachmarkInfo={nudgeInfo}
+          setIdx={setIdx}
+          total={total}
+          idx={idx}
           renderCard={renderCard}
         />
       )}
