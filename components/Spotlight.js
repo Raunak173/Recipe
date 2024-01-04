@@ -69,7 +69,7 @@ const Spotlight = ({
   const rgbColor = hexToRgb(design.bgColor);
   console.log("rgbColor", rgbColor);
   setSlColor(`rgba(${rgbColor},${design.bgOpacity / 100})`);
-  // setSlColor(`rgba(${rgbColor},0.30)`);
+  // setSlColor(`rgba(${rgbColor},0.80)`);
 
   // Text Styles
   const headingStyle = {
@@ -102,7 +102,7 @@ const Spotlight = ({
     justifyContent: "center",
     alignItems: "center",
     left: content.x_coordinate + 45,
-    top: content.y_coordinate - 320,
+    top: content.y_coordinate - 330,
     zIndex: 9999,
     position: "absolute",
   };
@@ -117,11 +117,11 @@ const Spotlight = ({
 
   const imageStyle = {
     left: design.spotlightX + 90,
-    top: design.spotlightY - 220,
-    height: 80,
+    top: design.spotlightY - 240,
+    height: 100,
     width: 20,
     position: "absolute",
-    zIndex: 10,
+    zIndex: 100,
   };
 
   const handlePress = () => {
@@ -130,11 +130,6 @@ const Spotlight = ({
       setIsSpotlight(false);
     }
   };
-
-  useEffect(() => {
-    const timeout = setTimeout(handlePress, 3000);
-    return () => clearTimeout(timeout);
-  }, [idx]);
 
   return (
     <>

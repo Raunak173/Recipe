@@ -77,7 +77,11 @@ const Tooltip = ({ tooltipInfo, setIdx, total, idx }) => {
       paddingVertical: 10,
       paddingHorizontal: 20,
       marginVertical: 10,
-      width: actionButton.buttonWidth === "fullWidth" ? "100%" : undefined,
+      width: actionButton.buttonWidth === "fullWidth" && "100%",
+    },
+    buttonContainer: {
+      width: actionButton.buttonWidth === "fullWidth" && "100%",
+      alignItems: actionButton.buttonAlignment,
     },
     buttonText: {
       color: actionButton.buttonTextColor,
@@ -186,20 +190,22 @@ const Tooltip = ({ tooltipInfo, setIdx, total, idx }) => {
           {tooltipInfo?.content?.heading}
         </Text>
         <Text style={tooltipStyles.body}>{tooltipInfo?.content?.body}</Text>
-        {actionButton.hasAdvancedOptions && (
-          <TouchableOpacity
-            style={tooltipStyles.button}
-            onPress={() => {
-              if (idx + 1 < total) {
-                setIdx((prevIdx) => prevIdx + 1);
-              }
-            }}
-          >
-            <Text style={tooltipStyles.buttonText}>
-              {actionButton.buttonText}
-            </Text>
-          </TouchableOpacity>
-        )}
+        <View style={tooltipStyles.buttonContainer}>
+          {actionButton.hasAdvancedOptions && (
+            <TouchableOpacity
+              style={tooltipStyles.button}
+              onPress={() => {
+                if (idx + 1 < total) {
+                  setIdx((prevIdx) => prevIdx + 1);
+                }
+              }}
+            >
+              <Text style={tooltipStyles.buttonText}>
+                {actionButton.buttonText}
+              </Text>
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
       {tooltipInfo?.design?.toolTipPosition === "top" && (
         <View style={tooltipStyles.topTriangleTip} />
