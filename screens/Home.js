@@ -224,14 +224,18 @@ const Home = ({ viewShotRef, setLData, nudges }) => {
                     )}
                   />
                 )}
-                <TouchableOpacity
-                  ref={(el) => (cardRefs.current[index] = el)}
-                  onPress={() =>
-                    navigation.navigate("IndCard", { recipe: recipe })
-                  }
-                >
-                  <Card recipe={recipe} />
-                </TouchableOpacity>
+                {index !== elIdx - 1 ||
+                (nudges[idx]?.type !== "coachmark" &&
+                  nudges[idx]?.type !== "spotlight") ? (
+                  <TouchableOpacity
+                    ref={(el) => (cardRefs.current[index] = el)}
+                    onPress={() =>
+                      navigation.navigate("IndCard", { recipe: recipe })
+                    }
+                  >
+                    <Card recipe={recipe} />
+                  </TouchableOpacity>
+                ) : null}
               </React.Fragment>
             ))}
           </View>

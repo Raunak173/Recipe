@@ -25,6 +25,7 @@ function hexToRgb(hex) {
 const Coachmark = ({ coachmarkInfo, renderCard, setIdx, total, idx }) => {
   const { content, media, design, actionButton } = coachmarkInfo;
   let rgbColor = hexToRgb(coachmarkInfo?.design?.coachColor);
+  let radius = design?.coachRadius;
 
   const handlePress = () => {
     if (idx + 1 < total) {
@@ -34,18 +35,18 @@ const Coachmark = ({ coachmarkInfo, renderCard, setIdx, total, idx }) => {
 
   const headingStyle = {
     color: content.headingTextColor,
-    fontSize: content.headingFontSize / 2,
+    fontSize: content.headingFontSize / 3,
     fontWeight: content.headingFontWeight.toString(),
     textAlign: content.headingAlignment,
-    margin: content.headingMargin.top / 2,
+    marginTop: content.headingMargin.top / 3,
   };
 
   const bodyStyle = {
     color: content.bodyTextColor,
-    fontSize: content.bodyFontSize / 2,
+    fontSize: content.bodyFontSize / 3,
     fontWeight: content.bodyFontWeight.toString(),
     textAlign: content.bodyAlignment,
-    margin: content.bodyMargin.top / 2,
+    marginTop: content.bodyMargin.top / 3,
   };
 
   // Button Style
@@ -53,7 +54,11 @@ const Coachmark = ({ coachmarkInfo, renderCard, setIdx, total, idx }) => {
     backgroundColor: actionButton.buttonColor,
     borderRadius: actionButton.roundness,
     padding: actionButton.padding.top,
-    margin: actionButton.margin.top / 2,
+    marginTop: actionButton.margin.top / 3,
+  };
+
+  const buttonContainerStyle = {
+    alignItems: actionButton.buttonAlignment,
   };
 
   const buttonText = actionButton.buttonText;
@@ -67,7 +72,10 @@ const Coachmark = ({ coachmarkInfo, renderCard, setIdx, total, idx }) => {
           styles.circle,
           styles.circle1,
           {
-            backgroundColor: `rgba(${rgbColor},0.50)`,
+            borderColor: `rgba(${rgbColor},0.50)`,
+            width: radius - 100,
+            height: radius - 100,
+            borderWidth: 10,
           },
         ]}
       ></View>
@@ -76,7 +84,10 @@ const Coachmark = ({ coachmarkInfo, renderCard, setIdx, total, idx }) => {
           styles.circle,
           styles.circle2,
           {
-            backgroundColor: `rgba(${rgbColor},0.25)`,
+            borderColor: `rgba(${rgbColor},0.25)`,
+            width: radius - 60,
+            height: radius - 60,
+            borderWidth: 30,
           },
         ]}
       ></View>
@@ -85,7 +96,10 @@ const Coachmark = ({ coachmarkInfo, renderCard, setIdx, total, idx }) => {
           styles.circle,
           styles.circle3,
           {
-            backgroundColor: `rgba(${rgbColor},0.16)`,
+            borderColor: `rgba(${rgbColor},0.16)`,
+            width: radius - 20,
+            height: radius - 20,
+            borderWidth: 50,
           },
         ]}
       ></View>
@@ -101,16 +115,18 @@ const Coachmark = ({ coachmarkInfo, renderCard, setIdx, total, idx }) => {
       >
         <Text style={headingStyle}>{coachmarkInfo?.content?.heading}</Text>
         <Text style={bodyStyle}>{coachmarkInfo?.content?.body}</Text>
-        <TouchableOpacity style={buttonStyle} onPress={handlePress}>
-          <Text
-            style={{
-              color: actionButton.buttonTextColor,
-              fontSize: actionButton.buttonFontSize / 2,
-            }}
-          >
-            {coachmarkInfo?.actionButton?.buttonText}
-          </Text>
-        </TouchableOpacity>
+        <View style={buttonContainerStyle}>
+          <TouchableOpacity style={buttonStyle} onPress={handlePress}>
+            <Text
+              style={{
+                color: actionButton.buttonTextColor,
+                fontSize: actionButton.buttonFontSize / 3,
+              }}
+            >
+              {coachmarkInfo?.actionButton?.buttonText}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -128,20 +144,14 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   circle1: {
-    width: 200,
-    height: 200,
     borderRadius: 999,
     top: -10,
   },
   circle2: {
-    width: 240,
-    height: 240,
     borderRadius: 999,
     top: -30,
   },
   circle3: {
-    width: 280,
-    height: 280,
     borderRadius: 999,
     top: -50,
   },
