@@ -59,7 +59,7 @@ const Coachmark = ({ coachmarkInfo, renderCard, setIdx, total, idx }) => {
 
   const buttonContainerStyle = {
     width: actionButton.buttonWidth === "fullWidth" ? "100%" : "50%",
-    alignItems: actionButton.buttonAlignment,
+    alignItems: actionButton?.buttonAlignment,
   };
 
   const buttonText = actionButton.buttonText;

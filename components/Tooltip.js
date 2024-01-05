@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 const Tooltip = ({ tooltipInfo, setIdx, total, idx }) => {
-  console.log("<<<<", tooltipInfo);
+  // console.log("<<<<", tooltipInfo);
   // Extracting relevant data
   const { content, design, actionButton } = tooltipInfo;
   const { body, heading, x_coordinate, y_coordinate } = content;
@@ -70,23 +70,29 @@ const Tooltip = ({ tooltipInfo, setIdx, total, idx }) => {
       textAlign: body?.bodyAlignment,
     },
     button: {
-      backgroundColor: actionButton.buttonColor,
-      alignItems: actionButton.buttonAlignment,
+      backgroundColor: actionButton?.buttonColor,
+      alignItems:
+        actionButton?.buttonAlignment === ""
+          ? "center"
+          : actionButton?.buttonAlignment,
       justifyContent: "center",
-      borderRadius: actionButton.roundness,
+      borderRadius: actionButton?.roundness,
       paddingVertical: 10,
       paddingHorizontal: 20,
       marginVertical: 10,
-      width: actionButton.buttonWidth === "fullWidth" && "100%",
+      width: actionButton.buttonWidth === "fullWidth" ? "100%" : "auto",
     },
     buttonContainer: {
-      width: actionButton.buttonWidth === "fullWidth" && "100%",
-      alignItems: actionButton.buttonAlignment,
+      width: actionButton.buttonWidth === "fullWidth" ? "100%" : "auto",
+      alignItems:
+        actionButton?.buttonAlignment === ""
+          ? "center"
+          : actionButton?.buttonAlignment,
     },
     buttonText: {
-      color: actionButton.buttonTextColor,
-      fontSize: actionButton.buttonFontSize / 2,
-      fontWeight: `${actionButton.buttonFontWeight}`,
+      color: actionButton?.buttonTextColor,
+      fontSize: actionButton?.buttonFontSize / 2,
+      fontWeight: `${actionButton?.buttonFontWeight}`,
     },
     topTriangleTip: {
       width: 0,

@@ -37,8 +37,6 @@ const Home = ({ viewShotRef, setLData, nudges }) => {
   const navigation = useNavigation();
   const elIdx = nudges[idx]?.location?.element;
 
-  console.log("El Idx", elIdx);
-
   const [data, setData] = useState(recipes);
   const [query, setQuery] = useState("");
   const { width, height } = Dimensions.get("window");
@@ -117,10 +115,6 @@ const Home = ({ viewShotRef, setLData, nudges }) => {
       console.log("Layout data array:", filteredLayoutData);
     });
   };
-
-  // useEffect(() => {
-  //   onCaptureLayoutData(captureLayoutData);
-  // }, []);
 
   return (
     <ViewShot

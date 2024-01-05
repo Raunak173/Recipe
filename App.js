@@ -47,14 +47,12 @@ export default function App() {
           },
         });
 
-        setGSId(
-          response?.data?.data?.campaigns?.length > 0
-            ? response?.data?.data?.campaigns[0]?.gameSettingsId
-            : ""
-        );
-        console.log(gsId);
+        if (response?.data?.data?.campaigns?.length > 0) {
+          setGSId(response?.data?.data?.campaigns[0]?.gameSettingsId);
+        }
+        console.log("GSID", response?.data?.data?.campaigns[0]?.gameSettingsId);
       } catch (error) {
-        console.error("Error getching the gs id:", error);
+        console.error("Error fetching the gs id:", error);
       }
     };
     fetchGameSettings();
@@ -71,13 +69,13 @@ export default function App() {
           const response = await axios.get(url, {
             headers: {
               authorization:
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGQ3YWRlMDU2ZGRlYmY1MWY5NjY1NGEiLCJjbGllbnRJZCI6IjY0ZDdhZGUwNTZkZGViZjUxZjk2NjU0YSIsInJvbGUiOiJvd25lciIsImlhdCI6MTcwMzU3MTMyOCwiZXhwIjoxNzA2MTYzMzI4fQ.CAZingSQkUTa4fOkte1k8ufmydykdsgVZaZY1rAjYxA",
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGQ3YWRlMDU2ZGRlYmY1MWY5NjY1NGEiLCJjbGllbnRJZCI6IjY0ZDdhZGUwNTZkZGViZjUxZjk2NjU0YSIsInJvbGUiOiJvd25lciIsImlhdCI6MTcwNDQ1OTc4OSwiZXhwIjoxNzA3MDUxNzg5fQ.MubfXHsAm1pVusZWCygZMcJ72NWf66jnZluVeoFUVHY",
             },
           });
 
           const nudgesData = response?.data?.data?.nudges;
           setNudges(nudgesData);
-          console.log("Nudge", nudges);
+          // console.log("Nudge", nudges);
         } catch (error) {
           console.error("Error fetching nudges:", error);
         }
